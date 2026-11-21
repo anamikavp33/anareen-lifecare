@@ -1,0 +1,25 @@
+# Render Blueprint: New + → Blueprint → pick this repository.
+# Render builds the app, gives it an https://….onrender.com address and keeps it running.
+services:
+  - type: web
+    name: anareen-lifecare
+    runtime: node
+    plan: free # free plan sleeps when idle and loses the database on restart; use a paid plan + disk for a real pilot
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true # Render makes a long random secret; it is never stored in git
+      - key: TRUST_PROXY
+        value: "1"
+      - key: FORCE_HTTPS
+        value: "true"
+      - key: BOOKING_OPEN
+        value: "06:00"
+      - key: BOOKING_CLOSE
+        value: "19:00"

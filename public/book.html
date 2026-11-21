@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="book.title">Book a token · Anareen Lifecare</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="tracker">
+      <form class="card card-pad" id="form" novalidate>
+        <div class="eyebrow" data-i18n="book.eyebrow">Book from home</div>
+        <h1 style="font-size:1.5rem" data-i18n="book.h1">Book today's OP token</h1>
+        <p class="muted" data-i18n="book.lead">Get your token number now and come to the hospital when your turn is near. You'll check your turn later using your mobile number.</p>
+
+        <div class="field">
+          <label for="dept" data-i18n="f.department">Department</label>
+          <select id="dept" required><option data-i18n="loading">Loading…</option></select>
+        </div>
+        <div class="field">
+          <label for="doctor" data-i18n="f.doctor">Doctor</label>
+          <select id="doctor" required disabled><option data-i18n="book.deptFirst">Choose a department first</option></select>
+        </div>
+        <div class="doc-preview hidden" id="docPreview"></div>
+
+        <div class="field">
+          <label for="name" data-i18n="book.name">Patient's name</label>
+          <input id="name" autocomplete="name" maxlength="60" placeholder="e.g. Rahul Krishnan" data-i18n-placeholder="book.namePh" required>
+        </div>
+        <div class="field">
+          <label for="phone" data-i18n="f.phone">Mobile number</label>
+          <div class="phone-input"><span>+91</span><input id="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" placeholder="98765 43210" required></div>
+          <p class="muted small" style="margin:6px 0 0" data-i18n="book.phoneHint">You'll use this number to check your turn. One token per doctor per day.</p>
+        </div>
+        <label class="check consent"><input type="checkbox" id="consent" required> <span data-i18n-html="book.consent">I agree that Anareen Lifecare may store this name and mobile number to manage my token, as explained in the <a href="/privacy" target="_blank" rel="noopener">privacy notice</a>.</span></label>
+        <button class="btn btn-block btn-lg" type="submit" id="submitBtn" data-i18n="book.submit">Book token</button>
+        <p class="form-error" id="err" role="alert"></p>
+      </form>
+
+      <div class="card ticket hidden" id="done">
+        <div class="ticket-head">
+          <h2 data-i18n="book.done">Your token is booked ✅</h2>
+          <p id="dDoctor"></p>
+        </div>
+        <div class="ticket-body">
+          <div class="ticket-nums">
+            <div class="ticket-num mine"><div class="label" data-i18n="yourToken">Your token</div><div class="value" id="dToken">–</div></div>
+            <div class="ticket-num"><div class="label" data-i18n="nowServing">Now serving</div><div class="value" id="dNow">–</div></div>
+          </div>
+          <div class="ticket-facts" style="margin-bottom:18px">
+            <div><strong id="dAhead">–</strong><span data-i18n="ahead">patients ahead</span></div>
+            <div><strong id="dEta">–</strong><span data-i18n="eta">estimated wait</span></div>
+            <div><strong id="dCode">–</strong><span data-i18n="book.code">booking code</span></div>
+          </div>
+          <div class="howto">
+            <strong data-i18n="book.howH">How to check your turn</strong>
+            <ol>
+              <li data-i18n-html="book.how1">Open this website and tap <b>My tokens</b>.</li>
+              <li data-i18n-html="book.how2">Enter your mobile number <b id="dPhone"></b>.</li>
+              <li data-i18n="book.how3">Your token updates live. Turn on alerts to be told when you're next.</li>
+            </ol>
+            <p class="muted small" style="margin:0" data-i18n-html="book.keepCode">Keep your <b>booking code</b>. You need it only if you want to cancel.</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+            <a class="btn" href="/track" id="myTokensBtn" data-i18n="book.seeMine">See my tokens</a>
+            <a class="btn btn-ghost" href="/book" data-i18n="book.another">Book for someone else</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/book.js"></script>
+</body>
+</html>

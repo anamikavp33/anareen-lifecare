@@ -1,0 +1,31 @@
+/* Waiting-hall TV display */
+body.display { background: #061f1d; color: #e8f5f2; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.d-top { display: flex; align-items: center; justify-content: space-between; padding: 22px 40px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.d-top .brand { color: #fff; font-size: 1.4rem; }
+.d-top .brand small { color: #7fb5ac; }
+.d-clock { text-align: right; }
+.d-clock strong { display: block; font-size: 2.2rem; font-variant-numeric: tabular-nums; line-height: 1; }
+.d-clock span { color: #7fb5ac; font-size: .95rem; }
+.d-title { padding: 18px 40px 0; font-size: 1.15rem; color: #9cd6cb; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; display: flex; justify-content: space-between; }
+.d-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; padding: 18px 40px 30px; align-content: start; overflow: auto; }
+.d-card { background: linear-gradient(160deg, #0b3532, #082926); border: 1px solid rgba(255,255,255,.07); border-radius: 18px; padding: 22px 24px; display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: center; transition: transform .3s; }
+.d-card .who h3 { font-size: 1.35rem; margin: 0; color: #fff; }
+.d-card .who p { margin: 2px 0 0; color: #8fbfb7; font-size: .95rem; }
+.d-card .tok { grid-row: span 2; text-align: center; min-width: 120px; }
+.d-card .tok span { display: block; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: #7fb5ac; font-weight: 700; }
+.d-card .tok strong { font-size: 4.4rem; line-height: 1; font-weight: 800; color: #5eead4; font-variant-numeric: tabular-nums; }
+.d-card.paused .tok strong { color: #5f7f7a; }
+.d-card .meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: #8fbfb7; font-size: .92rem; }
+.d-card .pill.consulting { background: rgba(34,197,94,.15); color: #86efac; }
+.d-card .pill.break { background: rgba(245,158,11,.15); color: #fcd34d; }
+.d-card .pill.unavailable { background: rgba(148,163,184,.12); color: #94a3b8; }
+.d-card.called { animation: called 1s ease-in-out 6; border-color: #5eead4; }
+@keyframes called { 50% { background: #0f5f57; transform: scale(1.02); } }
+.d-ticker { background: #0d7a6f; color: #fff; padding: 14px 40px; font-size: 1.3rem; font-weight: 600; display: flex; gap: 18px; align-items: center; min-height: 58px; }
+.d-ticker b { background: rgba(0,0,0,.2); padding: 3px 12px; border-radius: 6px; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; }
+.d-overlay { position: fixed; inset: 0; background: rgba(3,20,18,.86); display: grid; place-items: center; z-index: 10; text-align: center; }
+.d-overlay .card { background: #fff; color: var(--ink); padding: 34px; max-width: 460px; }
+.d-controls { display: flex; gap: 10px; }
+.d-controls select { background: #0b3532; color: #e8f5f2; border-color: rgba(255,255,255,.15); width: auto; }
+.d-controls .btn-ghost { color: #e8f5f2; border-color: rgba(255,255,255,.2); }
+.d-controls .btn-ghost:hover { background: rgba(255,255,255,.08); }

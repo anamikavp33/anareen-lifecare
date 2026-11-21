@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="display.title">Display board · Anareen Lifecare</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/display.css">
+</head>
+<body class="display">
+  <div class="d-top">
+    <a class="brand" href="/"><span class="brand-mark" id="logo"></span><span>Anareen Lifecare Hospital<small data-i18n="display.tag">Outpatient token status</small></span></a>
+    <div class="d-controls">
+      <select id="deptPick" aria-label="Department"></select>
+      <span id="langSlot"></span>
+      <button class="btn btn-ghost btn-sm" id="fsBtn" type="button" data-i18n="display.fullscreen">⛶ Full screen</button>
+    </div>
+    <div class="d-clock"><strong id="clock">--:--</strong><span id="date"></span></div>
+  </div>
+  <div class="d-title"><span id="boardTitle" data-i18n="allDepartments">All departments</span><span class="live-dot offline" data-i18n="live.connecting">Connecting…</span></div>
+  <div class="d-grid" id="grid"></div>
+  <div class="d-ticker" aria-live="assertive"><b data-i18n="display.calling">Now calling</b><span id="ticker" data-i18n="display.wait">Please wait for your token number to be called.</span></div>
+
+  <div class="d-overlay" id="overlay">
+    <div class="card">
+      <h2 data-i18n="display.overlayH">Waiting-hall display</h2>
+      <p class="muted" data-i18n="display.overlayP">Put this on the TV in the waiting area. Token calls are announced by voice.</p>
+      <button class="btn btn-lg btn-block" id="startBtn" type="button" data-i18n="display.start">🔊 Start with voice announcements</button>
+      <button class="btn btn-ghost btn-block" id="muteBtn" type="button" style="margin-top:10px" data-i18n="display.mute">Start without sound</button>
+      <p class="voice-note hidden" id="voiceNote" data-i18n="display.noVoice"></p>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/display.js"></script>
+</body>
+</html>

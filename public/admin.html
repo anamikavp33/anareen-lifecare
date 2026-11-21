@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · Anareen Lifecare</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="app-side" role="tablist" aria-label="Sections">
+      <a class="brand" href="/"><span class="brand-mark" id="logo"></span><span>Anareen<small>Hospital admin</small></span></a>
+      <button class="tab" type="button" data-tab="overview">📊 Overview</button>
+      <button class="tab" type="button" data-tab="desk">🎫 Front desk</button>
+      <button class="tab" type="button" data-tab="bookings">📋 Today's patients</button>
+      <button class="tab admin-only" type="button" data-tab="doctors">🩺 Doctors</button>
+      <button class="tab admin-only" type="button" data-tab="departments">🏥 Departments</button>
+      <button class="tab admin-only" type="button" data-tab="users">👤 Staff accounts</button>
+      <button class="tab admin-only" type="button" data-tab="activity">🧾 Activity log</button>
+      <div class="side-foot">
+        <div id="whoami" style="color:#fff;font-weight:600"></div>
+        <a href="#" id="pwLink">Change password</a> · <a href="#" id="logout">Sign out</a>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <div class="app-top">
+        <div><h1 id="pageTitle">Overview</h1><div class="muted" id="today"></div></div>
+        <span class="live-dot offline">Connecting…</span>
+      </div>
+
+      <!-- Overview -->
+      <section data-panel="overview">
+        <div class="tiles">
+          <div class="card tile"><div class="label">Patients seen today</div><div class="value" id="tServed">–</div></div>
+          <div class="card tile"><div class="label">Tokens issued</div><div class="value" id="tIssued">–</div></div>
+          <div class="card tile"><div class="label">Waiting now</div><div class="value" id="tWaiting">–</div></div>
+          <div class="card tile"><div class="label">Doctors consulting</div><div class="value" id="tConsulting">–</div><div class="hint" id="tDoctors"></div></div>
+        </div>
+        <div class="tiles">
+          <div class="card tile"><div class="label">🌐 Booked online</div><div class="value" id="tOnline">–</div></div>
+          <div class="card tile"><div class="label">🏥 Issued at reception</div><div class="value" id="tWalkin">–</div></div>
+          <div class="card tile"><div class="label">Not present (no-show)</div><div class="value" id="tNoShow">–</div></div>
+          <div class="card tile"><div class="label">Cancelled by patients</div><div class="value" id="tCancelled">–</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h2>Doctor performance today</h2></div>
+            <div class="table-wrap" style="margin-top:12px">
+              <table><thead><tr><th>Doctor</th><th>Status</th><th class="num">Seen</th><th class="num">Waiting</th><th class="num">Avg / patient</th></tr></thead><tbody id="perfBody"></tbody></table>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div class="card"><div class="card-head"><h2>Patients called per hour</h2></div><div class="bars" id="hourly"></div><div style="height:16px"></div></div>
+            <div class="card"><div class="card-head"><h2>Last 7 days</h2></div><div class="bars" id="daily"></div><div style="height:16px"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Front desk -->
+      <section data-panel="desk" class="hidden">
+        <div class="section-head" style="margin-bottom:16px">
+          <p class="muted" style="margin:0">Issue a token to each walk-in patient. If you enter their mobile number, they can check their turn from their phone.</p>
+          <input id="deskSearch" type="search" placeholder="Search doctor or department" style="max-width:280px" aria-label="Search">
+        </div>
+        <div class="desk-grid" id="deskGrid"></div>
+      </section>
+
+      <!-- Today's patients -->
+      <section data-panel="bookings" class="hidden">
+        <div class="card">
+          <div class="filters">
+            <select id="bDoctor" aria-label="Doctor"><option value="">All doctors</option></select>
+            <select id="bStatus" aria-label="Status">
+              <option value="">All statuses</option><option value="booked">Booked</option><option value="arrived">Arrived</option>
+              <option value="done">Seen</option><option value="no_show">No-show</option><option value="cancelled">Cancelled</option>
+            </select>
+            <input id="bSearch" type="search" placeholder="Search name or mobile" aria-label="Search">
+          </div>
+          <div class="table-wrap" style="margin-top:12px">
+            <table><thead><tr><th>Token</th><th>Patient</th><th>Mobile</th><th>Doctor</th><th>Source</th><th>Status</th><th></th></tr></thead><tbody id="bBody"></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Doctors -->
+      <section data-panel="doctors" class="hidden">
+        <div class="card">
+          <div class="card-head"><h2>All doctors</h2><button class="btn btn-sm" id="addDoctor" type="button">+ Add doctor</button></div>
+          <div class="table-wrap" style="margin-top:12px">
+            <table><thead><tr><th>Name</th><th>Department</th><th>Room</th><th>Login</th><th>Listed</th><th></th></tr></thead><tbody id="docBody"></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Departments -->
+      <section data-panel="departments" class="hidden">
+        <div class="card">
+          <div class="card-head"><h2>Departments</h2><button class="btn btn-sm" id="addDept" type="button">+ Add department</button></div>
+          <div class="table-wrap" style="margin-top:12px">
+            <table><thead><tr><th></th><th>Name</th><th>Description</th><th></th></tr></thead><tbody id="deptBody"></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Users -->
+      <section data-panel="users" class="hidden">
+        <div class="card">
+          <div class="card-head"><h2>Staff accounts</h2><button class="btn btn-sm" id="addUser" type="button">+ Add account</button></div>
+          <div class="table-wrap" style="margin-top:12px">
+            <table><thead><tr><th>Username</th><th>Role</th><th>Linked doctor</th><th>Created</th><th></th></tr></thead><tbody id="userBody"></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Activity -->
+      <section data-panel="activity" class="hidden">
+        <div class="card">
+          <div class="card-head"><h2>Recent activity</h2><button class="btn btn-sm btn-ghost" id="refreshAudit" type="button">Refresh</button></div>
+          <div class="table-wrap" style="margin-top:12px">
+            <table><thead><tr><th>Time</th><th>User</th><th>Action</th><th>Details</th></tr></thead><tbody id="auditBody"></tbody></table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Doctor form -->
+  <dialog id="docDialog">
+    <form id="docForm">
+      <div class="modal-head"><h2 id="docDialogTitle">Add doctor</h2><button class="x-btn" type="button" data-close aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="field"><label for="fName">Full name</label><input id="fName" placeholder="Dr. Firstname Lastname" required maxlength="80"></div>
+        <div class="field-row">
+          <div class="field"><label for="fDept">Department</label><select id="fDept" required></select></div>
+          <div class="field"><label for="fRoom">Room</label><input id="fRoom" maxlength="20" placeholder="e.g. 204"></div>
+        </div>
+        <div class="field"><label for="fDesig">Qualifications / designation</label><input id="fDesig" maxlength="120" placeholder="MBBS, MD"></div>
+        <div class="field-row">
+          <div class="field"><label for="fAvg">Usual minutes per patient</label><input id="fAvg" type="number" min="1" max="120" value="10"></div>
+          <div class="field"><label for="fActive">Shown to patients</label><select id="fActive"><option value="1">Yes</option><option value="0">No (hidden)</option></select></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="fOnline">Online booking</label><select id="fOnline"><option value="1">On</option><option value="0">Off (reception only)</option></select></div>
+          <div class="field"><label for="fLimit">Online tokens per day</label><input id="fLimit" type="number" min="0" max="500" value="20"></div>
+        </div>
+        <div id="loginFields">
+          <hr style="border:0;border-top:1px solid var(--line);margin:4px 0 16px">
+          <p class="muted small">Optional: create a login so the doctor can control their own queue.</p>
+          <div class="field-row">
+            <div class="field"><label for="fUser">Username</label><input id="fUser" maxlength="40" placeholder="dr.name" autocomplete="off"></div>
+            <div class="field"><label for="fPass">Password</label><input id="fPass" type="password" minlength="8" autocomplete="new-password"></div>
+          </div>
+        </div>
+        <p class="form-error" id="docErr"></p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" type="button" data-close>Cancel</button><button class="btn" type="submit">Save</button></div>
+    </form>
+  </dialog>
+
+  <!-- Department form -->
+  <dialog id="deptDialog">
+    <form id="deptForm">
+      <div class="modal-head"><h2 id="deptDialogTitle">Add department</h2><button class="x-btn" type="button" data-close aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="field-row" style="grid-template-columns:90px 1fr">
+          <div class="field"><label for="gIcon">Icon</label><input id="gIcon" maxlength="8" placeholder="🏥"></div>
+          <div class="field"><label for="gName">Name</label><input id="gName" required maxlength="60"></div>
+        </div>
+        <div class="field"><label for="gDesc">Short description</label><textarea id="gDesc" rows="3" maxlength="300"></textarea></div>
+        <p class="form-error" id="deptErr"></p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" type="button" data-close>Cancel</button><button class="btn" type="submit">Save</button></div>
+    </form>
+  </dialog>
+
+  <!-- User form -->
+  <dialog id="userDialog">
+    <form id="userForm">
+      <div class="modal-head"><h2>Add staff account</h2><button class="x-btn" type="button" data-close aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="field-row">
+          <div class="field"><label for="uName">Username</label><input id="uName" required minlength="3" maxlength="40" autocomplete="off"></div>
+          <div class="field"><label for="uPass">Password</label><input id="uPass" type="password" required minlength="8" autocomplete="new-password"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="uRole">Role</label><select id="uRole"><option value="reception">Reception</option><option value="doctor">Doctor</option><option value="admin">Admin</option></select></div>
+          <div class="field hidden" id="uDocWrap"><label for="uDoc">Doctor</label><select id="uDoc"></select></div>
+        </div>
+        <p class="form-error" id="userErr"></p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" type="button" data-close>Cancel</button><button class="btn" type="submit">Create</button></div>
+    </form>
+  </dialog>
+
+  <!-- Issue token -->
+  <dialog id="issueDialog">
+    <form id="issueForm">
+      <div class="modal-head"><h2 id="issueTitle">Issue token</h2><button class="x-btn" type="button" data-close aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="field"><label for="iName">Patient's name <span class="muted">(optional)</span></label><input id="iName" maxlength="60" autocomplete="off"></div>
+        <div class="field">
+          <label for="iPhone">Mobile number <span class="muted">(optional, lets them check their turn by phone)</span></label>
+          <div class="phone-input"><span>+91</span><input id="iPhone" type="tel" inputmode="numeric" maxlength="14" autocomplete="off" placeholder="98765 43210"></div>
+        </div>
+        <label class="check consent"><input type="checkbox" id="iConsent"> <span>Patient agreed to their name and number being kept, as in the <a href="/privacy" target="_blank" rel="noopener">privacy notice</a> <span class="muted">(optional)</span></span></label>
+        <p class="form-error" id="issueErr"></p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" type="button" data-close>Cancel</button><button class="btn" type="submit" id="issueSubmit">Issue token</button></div>
+    </form>
+  </dialog>
+
+  <!-- Token slip -->
+  <dialog id="slipDialog">
+    <div class="modal-head"><h2>Token issued</h2><button class="x-btn" type="button" data-close aria-label="Close">×</button></div>
+    <div class="modal-body slip" id="slipBody"></div>
+    <div class="modal-foot"><button class="btn btn-ghost" type="button" data-close>Close</button><button class="btn" type="button" id="printSlip">🖨️ Print slip</button></div>
+  </dialog>
+
+  <dialog id="pwDialog">
+    <form method="dialog" id="pwForm">
+      <div class="modal-head"><h2>Change password</h2><button class="x-btn" value="cancel" aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="field"><label for="pwCur">Current password</label><input id="pwCur" type="password" autocomplete="current-password" required></div>
+        <div class="field"><label for="pwNew">New password (min 8 characters)</label><input id="pwNew" type="password" minlength="8" autocomplete="new-password" required></div>
+        <p class="form-error" id="pwErr"></p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" value="cancel" formnovalidate>Cancel</button><button class="btn" value="ok" id="pwSave">Save</button></div>
+    </form>
+  </dialog>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/staff.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

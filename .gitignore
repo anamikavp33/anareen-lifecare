@@ -1,0 +1,13 @@
+node_modules/
+.env
+data/
+backups/
+logs/
+*.db
+*.db-shm
+*.db-wal
+# Never commit cloud credentials
+serviceAccountKey*.json
+*.pem
+.DS_Store
+coverage/

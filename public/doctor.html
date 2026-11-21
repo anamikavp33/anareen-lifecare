@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doctor console · Anareen Lifecare</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="app-side">
+      <a class="brand" href="/"><span class="brand-mark" id="logo"></span><span>Anareen<small>Doctor console</small></span></a>
+      <button class="tab active" type="button">🎛️ My queue</button>
+      <button class="tab" type="button" id="openDisplay">📺 Display board</button>
+      <button class="tab hidden" type="button" id="backAdmin">← Back to admin</button>
+      <div class="side-foot">
+        <div id="whoami" style="color:#fff;font-weight:600"></div>
+        <a href="#" id="pwLink">Change password</a> · <a href="#" id="logout">Sign out</a>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <div class="app-top">
+        <div>
+          <h1 id="docName">Loading…</h1>
+          <div class="muted" id="docMeta"></div>
+        </div>
+        <span class="live-dot offline">Connecting…</span>
+      </div>
+
+      <div class="console">
+        <div class="card now-serving">
+          <div class="label">Now serving</div>
+          <div class="token" id="current" aria-live="polite">0</div>
+          <div class="sub"><span id="waiting">0</span> waiting · <span id="issued">0</span> tokens issued today</div>
+          <div class="console-btns">
+            <button class="btn btn-ghost" id="prevBtn" type="button" title="Shortcut: P">← Previous</button>
+            <button class="btn" id="nextBtn" type="button" title="Shortcut: N or Space">Call next patient →</button>
+          </div>
+          <p class="muted small" style="margin:14px 0 0">Shortcuts: <span class="kbd">N</span> or <span class="kbd">Space</span> next · <span class="kbd">P</span> previous</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div class="card card-pad">
+            <h2>Availability</h2>
+            <div class="seg" role="group" aria-label="Status">
+              <button type="button" data-status="consulting">Consulting</button>
+              <button type="button" data-status="break">On break</button>
+              <button type="button" data-status="unavailable">Not available</button>
+            </div>
+            <div class="field" style="margin:14px 0 0">
+              <label for="resume">Back at (shown to patients on break)</label>
+              <input id="resume" type="time">
+            </div>
+          </div>
+
+          <form class="card card-pad" id="setForm">
+            <h2>Jump to token</h2>
+            <div style="display:flex;gap:10px">
+              <input id="setValue" type="number" min="0" max="9999" placeholder="Token number" aria-label="Token number" required>
+              <button class="btn btn-ghost" type="submit">Set</button>
+            </div>
+            <button class="btn btn-danger btn-sm" id="resetBtn" type="button" style="margin-top:14px">Reset today's queue</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <div class="card-head"><h2>Up next</h2><span class="muted small">Mark patients who aren't here; “Next” skips them</span></div>
+        <ul class="upnext" id="upnext" style="margin-top:12px"></ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Today's activity</h2><span class="muted small" id="avgInfo"></span></div>
+        <ul class="history" id="history" style="margin-top:12px"></ul>
+      </div>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="pwDialog">
+    <form method="dialog" id="pwForm">
+      <div class="modal-head"><h2>Change password</h2><button class="x-btn" value="cancel" aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="field"><label for="pwCur">Current password</label><input id="pwCur" type="password" autocomplete="current-password" required></div>
+        <div class="field"><label for="pwNew">New password (min 8 characters)</label><input id="pwNew" type="password" minlength="8" autocomplete="new-password" required></div>
+        <p class="form-error" id="pwErr"></p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" value="cancel" formnovalidate>Cancel</button><button class="btn" value="ok" id="pwSave">Save</button></div>
+    </form>
+  </dialog>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/staff.js"></script>
+  <script src="/js/doctor.js"></script>
+</body>
+</html>

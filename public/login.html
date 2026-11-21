@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff sign in · Anareen Lifecare</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="auth-wrap">
+    <form class="card auth-card" id="loginForm" novalidate>
+      <h1>Staff sign in</h1>
+      <p class="muted">Doctors, reception and administrators.</p>
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" autocomplete="username" required autofocus>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-block btn-lg" type="submit" id="submitBtn">Sign in</button>
+      <p class="form-error" id="error" role="alert"></p>
+      <div class="demo-creds">
+        <strong>Demo accounts</strong> (change before real use)<br>
+        Admin: <code>admin</code> / <code>Admin@123</code><br>
+        Reception: <code>reception</code> / <code>Reception@123</code><br>
+        Doctor: <code>dr.arun</code> / <code>Doctor@123</code>
+      </div>
+    </form>
+  </main>
+  <script src="/js/common.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

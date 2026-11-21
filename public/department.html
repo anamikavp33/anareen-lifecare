@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="dept.title">Departments · Anareen Lifecare</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main>
+    <div class="page-head">
+      <div class="container">
+        <h1 id="deptTitle"><span id="deptIcon">🏥</span> <span id="deptName" data-i18n="allDepartments">All departments</span></h1>
+        <p id="deptDesc" data-i18n="dept.lead">Live token status for every doctor. Updates instantly, no refresh needed.</p>
+      </div>
+    </div>
+    <div class="container layout">
+      <aside>
+        <ul class="card side-list" id="deptList" aria-label="Departments"></ul>
+      </aside>
+      <section>
+        <div class="section-head" style="margin-bottom:16px">
+          <span class="muted small" id="doctorCount"></span>
+          <span class="live-dot offline" data-i18n="live.connecting">Connecting…</span>
+        </div>
+        <div class="doctor-grid" id="doctorGrid">
+          <div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/department.js"></script>
+</body>
+</html>
