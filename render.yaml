@@ -1,25 +1,45 @@
-# Render Blueprint: New + → Blueprint → pick this repository.
-# Render builds the app, gives it an https://….onrender.com address and keeps it running.
+# Render Blueprint. On render.com: New + -> Blueprint -> pick this GitHub repository.
+# Step-by-step guide: docs/DEPLOY.md
 services:
   - type: web
     name: anareen-lifecare
     runtime: node
-    plan: free # free plan sleeps when idle and loses the database on restart; use a paid plan + disk for a real pilot
+    region: singapore # closest Render region to India
+    plan: starter # a persistent disk needs a paid plan; the free plan loses all data on every restart
     buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /api/health
+    # The database, daily backups and error log live on this disk, so they survive restarts and new deploys.
+    disk:
+      name: anareen-data
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: NODE_VERSION
         value: "22"
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
-        generateValue: true # Render makes a long random secret; it is never stored in git
-      - key: TRUST_PROXY
-        value: "1"
-      - key: FORCE_HTTPS
-        value: "true"
+        generateValue: true # Render creates a long random secret and keeps it; it is never stored in git
+      - key: DB_PATH
+        value: /var/data/anareen.db
+      - key: BACKUP_DIR
+        value: /var/data/backups
+      - key: LOG_FILE
+        value: /var/data/logs/error.log
+      - key: HOSPITAL_NAME
+        value: Anareen Lifecare Hospital
+      - key: TZ_NAME
+        value: Asia/Kolkata
       - key: BOOKING_OPEN
         value: "06:00"
       - key: BOOKING_CLOSE
         value: "19:00"
+      - key: RETENTION_DAYS
+        value: "30"
+      - key: BACKUP_KEEP
+        value: "14"
+      - key: TRUST_PROXY
+        value: "1" # Render puts one HTTPS proxy in front of the app
+      - key: FORCE_HTTPS
+        value: "true"

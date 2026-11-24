@@ -101,6 +101,8 @@ Change these passwords before any real use (each user can do this from their das
 
 ## Running a pilot
 
+**To put it online with GitHub and Render, follow [docs/DEPLOY.md](docs/DEPLOY.md)** (step by step, with a ready-made `render.yaml`).
+
 ### Settings (`.env`)
 
 | Variable | Default | What it does |
